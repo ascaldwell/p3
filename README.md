@@ -2,10 +2,10 @@
 Project 3
 
 Andrew:
-[]insert
-[]forced delete,
-[]print using count range,
-[]print suffix.
+  []insert
+  []forced delete,
+  []print using count range,
+  []print suffix.
 
 Dan:
 []delete
