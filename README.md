@@ -3,10 +3,10 @@
 ## Project 3
 
 Andrew:
-- [ ]insert
-- [ ]forced delete,
-- [ ]print using count range,
-- [ ]print suffix.
+-[x]insert
+-[ ]forced delete,
+-[ ]print using count range,
+-[ ]print suffix.
 
 Dan:
 - [ ]delete
