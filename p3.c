@@ -2,8 +2,8 @@
 //  main.c
 //  p3
 //
-//  Created by Andrew Caldwell on 10/26/16.
-//  Copyright © 2016 Andrew Caldwell. All rights reserved.
+//  Created by Andrew Caldwell and Dan Stowe on 10/26/16.
+//
 //
 
 #include <stdio.h>
