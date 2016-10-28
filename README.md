@@ -2,6 +2,9 @@
 
 ## Project 3
 ---
+
+- [x] create a linked list
+
 #### Andrew:
 - [ ] insert
 - [ ] forced delete
