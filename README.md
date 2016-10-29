@@ -18,7 +18,7 @@
 - [ ] print suffix
 
 
-BOTH: end
+BOTH: - [ ] end
 
 // use "[ ]" to denote unchecked task and "[x]" to denote completed task
 
