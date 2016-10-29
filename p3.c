@@ -29,7 +29,7 @@ struct node *create_list(int val)
     printf("Creating list with head as [%d]", val);
     struct node *ptr = (struct node*) malloc(sizeof(struct node));
     if (ptr == NULL)
-        printf("Memeory could not be allocated for node creation. Exit with error.\n"); exit(1);
+        printf("Memory could not be allocated for node creation. Exit with error.\n"); exit(1);
 
 
     ptr->val = val;
