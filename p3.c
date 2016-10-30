@@ -38,23 +38,22 @@ int main(void)
     char *item[11]; // char entered by user
     char command[4];
     
-    while(1) {
-        
+    do {
         instructions(); // ask for a command
         scanf("%s", command);
         if (strcmp(command, "end") == 0)
             break;
         scanf("%s", *item);
         // loop while user does not choose 3
-
+        
         
         if (strcmp(command, "ins") == 0) {
             insert(&startPtr, *item); // insert item in list
             printList(startPtr);
         }
         if (strcmp(command, "del") == 0) {
-        // delete an element
-        // if list is not empty
+            // delete an element
+            // if list is not empty
             if (!isEmpty(startPtr)) {
                 // if character is found, remove it
                 
@@ -68,10 +67,11 @@ int main(void)
             }
             else
                 puts("List is empty.\n");
-        
+            
         }
-    }
-    
+
+    } while (strcmp(command, "end") != 0);
+
     puts("End of run.");
 }
 
@@ -172,30 +172,6 @@ void printList(ListNodePtr currentPtr)
 
     } 
 }
-/* while(1)
- {
- 
- printf("Command? ");
- scanf("%s", commandString);
- 
- if (strcmp(commandString, "end") == 0)
- break;
-        
-        scanf("%s", dataString);
-        
-        if (isdigit(dataString[0]))
-            numValue = atoi(dataString);
-        
-
-        else if (strcmp(commandString, "ins") == 0)
-        {
-            insert(&startPtr, dataString);
-            //print_list();
-        }
-    } */
-    
-
-
 
 /* Search function to traverse the linked list to find a node with a specified */
 /* value and return it.                                                        */
