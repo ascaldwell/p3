@@ -6,259 +6,240 @@
 //
 //
 
-typedef struct NodeTag {
-    char *data;
-    struct NodeTag *next;
-} Node;
-
-Node *Node_create();
-void Node_destroy(Node *node);
-
-typedef struct ListTag {
-    struct NodeTag *first;
-} List;
-
-List *List_create();
-void List_destroy(List *list);
-
-void List_append(List *list, char *str);
-void List_insert(List *list, int index, char *str);
-
-char *List_get(List *list, int index);
-int List_find(List *list, char *str);
-
-void List_remove(List *list, int index);
-char *List_pop(List *list, int index);
-
-int List_length(List *list);
-void List_print(List *list);
-
-
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <assert.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
+#define MAX_CMD_LENGTH 4
+#define MAX_STRING_LENGTH 11
 
-int main() {
-    List *l = List_create();
-    
-    List_append(l, "jim");
-    List_append(l, "bob");
-    List_append(l, "joe");
-    List_append(l, "bean");
-    List_append(l, "junior");
-    
-    List_insert(l, 3, "HAROLD");
-    List_insert(l, List_length(l), "CARL");
-    List_insert(l, 0, "MIKE");
-    
-    List_remove(l, 2);
-    
-    List_print(l);
-    printf("Length: %i\n", List_length(l));
-    printf("Pop 3: %s\n", List_pop(l, 3));
-    printf("Get 3: %s\n", List_get(l, 3));
-    printf("Find \"junior\": %i\n", List_find(l, "junior"));
-    
-    List_destroy(l);
-    
-    return 0;
-}
+// self-referential structure
+struct listNode {
+    int count;
+    char data[10]; // each listNode contains a character
+    struct listNode *nextPtr; // pointer to next node
+};
 
+typedef struct listNode ListNode; // synonym for struct listNode
+typedef ListNode *ListNodePtr; // synonym for ListNode*
 
-Node *Node_create() {
-    Node *node = malloc(sizeof(Node));
-    assert(node != NULL);
+// prototypes
+void insert(ListNodePtr *sPtr, char value[]);
+char delete(ListNodePtr *sPtr, char value[]);
+int isEmpty(ListNodePtr sPtr);
+void printList(ListNodePtr currentPtr);
+void instructions(void);
+
+int main(void)
+{
+    ListNodePtr startPtr = NULL; // initially there are no nodes
+    char *item[11]; // char entered by user
+    char command[4];
     
-    node->data = "";
-    node->next = NULL;
-    
-    return node;
-}
+    while(1) {
+        
+        instructions(); // ask for a command
+        scanf("%s", command);
+        if (strcmp(command, "end") == 0)
+            break;
+        scanf("%s", *item);
+        // loop while user does not choose 3
 
-
-void Node_destroy(Node *node) {
-    assert(node != NULL);
-    free(node);
-}
-
-
-List *List_create() {
-    List *list = malloc(sizeof(List));
-    assert(list != NULL);
-    
-    Node *node = Node_create();
-    list->first = node;
-    
-    return list;
-}
-
-
-void List_destroy(List *list) {
-    assert(list != NULL);
-    
-    Node *node = list->first;
-    Node *next;
-    while (node != NULL) {
-        next = node->next;
-        free(node);
-        node = next;
-    }
-    
-    free(list);
-}
-
-
-void List_append(List *list, char *str) {
-    assert(list != NULL);
-    assert(str != NULL);
-    
-    Node *node = list->first;
-    while (node->next != NULL) {
-        node = node->next;
-    }
-    
-    node->data = str;
-    node->next = Node_create();
-}
-
-
-void List_insert(List *list, int index, char *str) {
-    assert(list != NULL);
-    assert(str !=NULL);
-    assert(0 <= index);
-    assert(index <= List_length(list));
-    
-    if (index == 0) {
-        Node *after = list->first;
-        list->first = Node_create();
-        list->first->data = str;
-        list->first->next = after;
-    } else if (index == List_length(list)) {
-        List_append(list, str);
-    } else {
-        Node *before = list->first;
-        Node *after = list->first->next;
-        while (index > 1) {
-            index--;
-            before = before->next;
-            after = after->next;
+        
+        if (strcmp(command, "ins") == 0) {
+            insert(&startPtr, *item); // insert item in list
+            printList(startPtr);
         }
-        before->next = Node_create();
-        before->next->data = str;
-        before->next->next = after;
-    }
-}
-
-
-char *List_get(List *list, int index) {
-    assert(list != NULL);
-    assert(0 <= index);
-    assert(index < List_length(list));
-    
-    Node *node = list->first;
-    while (index > 0) {
-        node = node->next;
-        index--;
-    }
-    return node->data;
-}
-
-
-int List_find(List *list, char *str) {
-    assert(list != NULL);
-    assert(str != NULL);
-    
-    int index = 0;
-    Node *node = list->first;
-    while (node->next != NULL) {
-        if (strlen(str) == strlen(node->data)) {
-            int cmp = strcmp(str, node->data);
-            if (cmp == 0) {
-                return index;
+        if (strcmp(command, "del") == 0) {
+        // delete an element
+        // if list is not empty
+            if (!isEmpty(startPtr)) {
+                // if character is found, remove it
+                
+                if (delete(&startPtr, *item)) { // remove item
+                    printf("%s deleted.\n", *item);
+                    printList(startPtr);
+                }
+                else {
+                    printf("%s not found.\n\n", *item);
+                }
             }
-        }
-        node = node->next;
-        index++;
-    }
-    return -1;
-}
-
-
-void List_remove(List *list, int index) {
-    assert(list != NULL);
-    assert(0 <= index);
-    assert(index < List_length(list));
-    
-    if (index == 0) {
-        Node *node = list->first;
-        list->first = list->first->next;
-        Node_destroy(node);
-    } else {
-        Node *before = list->first;
-        while (index > 1) {
-            before = before->next;
-            index--;
-        }
-        Node *node = before->next;
-        before->next = before->next->next;
-        Node_destroy(node);
-    }
-}
-
-
-char *List_pop(List *list, int index) {
-    assert(list != NULL);
-    assert(0 <= index);
-    assert(index < List_length(list));
-    
-    if (index == 0) {
-        Node *node = list->first;
-        list->first = list->first->next;
-        char *data = node->data;
-        Node_destroy(node);
-        return data;
-    } else {
-        Node *before = list->first;
-        while (index > 1) {
-            before = before->next;
-            index--;
-        }
-        Node *node = before->next;
-        before->next = before->next->next;
-        char *data = node->data;
-        Node_destroy(node);
-        return data;
-    }
-}
-
-
-int List_length(List *list) {
-    assert(list != NULL);
-    
-    Node *node = list->first;
-    int length = 0;
-    while (node->next != NULL) {
-        length++;
-        node = node->next;
-    }
-    
-    return length;
-}
-
-
-void List_print(List *list) {
-    assert(list != NULL);
-    
-    printf("[");
-    Node *node = list->first;
-    while (node->next != NULL) {
-        printf("%s", node->data);
-        node = node->next;
-        if (node->next != NULL) {
-            printf(", ");
+            else
+                puts("List is empty.\n");
+        
         }
     }
-    printf("]\n");
+    
+    puts("End of run.");
 }
+
+// display program instructions to user
+void instructions(void)
+{
+    puts("Command?\t");
+}
+
+// insert a new value into the list
+void insert(ListNodePtr *sPtr, char value[])
+{
+    ListNodePtr newPtr = malloc(sizeof(ListNode)); // create node
+    
+    if (newPtr != NULL) { // is space available
+        strcpy(newPtr->data, value); // place string value in node
+        newPtr->nextPtr = NULL; // node does not link to another node
+        
+        ListNodePtr previousPtr = NULL;
+        ListNodePtr currentPtr = *sPtr;
+        
+        // loop to find the correct location in the list
+        /*while (currentPtr != NULL && strcmp(value, currentPtr->data) > 0) {
+            previousPtr = currentPtr; // walk to ...
+            currentPtr = currentPtr->nextPtr; // ... next node
+        }*/
+        
+        // insert new node at beginning of list
+        if (previousPtr == NULL) {
+            newPtr->nextPtr = *sPtr;
+            *sPtr = newPtr;
+        }
+        else { // insert new node between previousPtr and currentPtr
+            previousPtr->nextPtr = newPtr;
+            newPtr->nextPtr = currentPtr;
+        }
+    }
+    else {
+        printf("%s not inserted. No memory available.\n", value);
+    }
+}
+
+// delete a list element
+char delete(ListNodePtr *sPtr, char value[])
+{
+    // delete first node if a match is found
+    if (strcmp(value, (*sPtr)->data) == 0) {
+        ListNodePtr tempPtr = *sPtr; // hold onto node being removed
+        *sPtr = (*sPtr)->nextPtr; // de-thread the node
+        free(tempPtr); // free the de-threaded node
+        return *value;
+    }
+    else {
+        ListNodePtr previousPtr = *sPtr;
+        ListNodePtr currentPtr = (*sPtr)->nextPtr;
+        
+        // loop to find the correct location in the list
+        while (currentPtr != NULL && strcmp(currentPtr->data, value) != 0) {
+            previousPtr = currentPtr; // walk to ...
+            currentPtr = currentPtr->nextPtr; // ... next node
+            
+        }
+        
+        // delete node at currentPtr
+        if (currentPtr != NULL) {
+            ListNodePtr tempPtr = currentPtr;
+            previousPtr->nextPtr = currentPtr->nextPtr;
+            free(tempPtr);
+            return *value;
+        }
+    }
+    
+    return '\0';
+}
+
+// return 1 if the list is empty, 0 otherwise
+int isEmpty(ListNodePtr sPtr)
+{
+    return sPtr == NULL;
+}
+
+// print the list
+void printList(ListNodePtr currentPtr)
+{
+    // if list is empty
+    if (isEmpty(currentPtr)) {
+        puts("List is empty.\n");
+    }
+    else {
+        puts("The list is:");
+        
+        // while not the end of the list
+        while (currentPtr != NULL) { 
+            printf("%s \t%d\n", currentPtr->data, currentPtr->count);
+            currentPtr = currentPtr->nextPtr;   
+        } 
+        
+
+    } 
+}
+/* while(1)
+ {
+ 
+ printf("Command? ");
+ scanf("%s", commandString);
+ 
+ if (strcmp(commandString, "end") == 0)
+ break;
+        
+        scanf("%s", dataString);
+        
+        if (isdigit(dataString[0]))
+            numValue = atoi(dataString);
+        
+
+        else if (strcmp(commandString, "ins") == 0)
+        {
+            insert(&startPtr, dataString);
+            //print_list();
+        }
+    } */
+    
+
+
+
+/* Search function to traverse the linked list to find a node with a specified */
+/* value and return it.                                                        */
+/*Node *search(char val[], Node **prev)
+{
+    struct node *ptr = head;
+    struct node *tmp = NULL;
+    int found = 0;
+    
+    printf("\nSearching for the list for value [%s] \n", val);
+    
+    while(ptr != NULL)
+    {
+        if (strcmp(&ptr->symbol, val) == 0)
+            {
+        found = 1;
+            break;
+        }
+        else
+        {
+            tmp = ptr;
+            ptr = ptr->next;
+        }
+    }
+    
+    if (found == 1)
+    {
+        if(prev)
+            *prev = tmp;
+        return ptr;
+    }
+    else
+        return NULL;
+}
+*/
+
+/* void print_list(NODE *head)
+{
+    NODE *current = head;
+    
+    while (current != NULL)
+    {
+        printf("%d\n", current->value);
+        current = current->next;
+    }
+}
+*/
