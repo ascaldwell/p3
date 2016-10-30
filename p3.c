@@ -44,7 +44,6 @@ int main(void)
         if (strcmp(command, "end") == 0)
             break;
         scanf("%s", *item);
-        // loop while user does not choose 3
         
         
         if (strcmp(command, "ins") == 0) {
@@ -78,7 +77,7 @@ int main(void)
 // display program instructions to user
 void instructions(void)
 {
-    puts("Command?\t");
+    printf("Command? ");
 }
 
 // insert a new value into the list
@@ -94,19 +93,22 @@ void insert(ListNodePtr *sPtr, char value[])
         ListNodePtr currentPtr = *sPtr;
         
         // loop to find the correct location in the list
-        /*while (currentPtr != NULL && strcmp(value, currentPtr->data) > 0) {
+        while (currentPtr != NULL) {
             previousPtr = currentPtr; // walk to ...
             currentPtr = currentPtr->nextPtr; // ... next node
-        }*/
+        }
         
-        // insert new node at beginning of list
+        // insert new node at end of list
         if (previousPtr == NULL) {
             newPtr->nextPtr = *sPtr;
             *sPtr = newPtr;
+            newPtr->count++;
         }
         else { // insert new node between previousPtr and currentPtr
             previousPtr->nextPtr = newPtr;
             newPtr->nextPtr = currentPtr;
+            newPtr->count++;
+            
         }
     }
     else {
@@ -161,16 +163,13 @@ void printList(ListNodePtr currentPtr)
         puts("List is empty.\n");
     }
     else {
-        puts("The list is:");
-        
         // while not the end of the list
         while (currentPtr != NULL) { 
-            printf("%s \t%d\n", currentPtr->data, currentPtr->count);
+            printf("\t%s \t%d\n", currentPtr->data, currentPtr->count);
             currentPtr = currentPtr->nextPtr;   
-        } 
-        
-
-    } 
+        }
+    }
+    printf("\n");
 }
 
 /* Search function to traverse the linked list to find a node with a specified */
