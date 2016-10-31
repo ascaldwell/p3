@@ -6,20 +6,24 @@
 - [x] create_list
 
 #### Andrew:
-- [ ] insert    // almost done, just trying to work out the kinks with sorting the list based on count
+- [ ] insert
 - [ ] forced delete
-- [x] print list
+- [ ] print list
 - [ ] print prefix
 
 #### Dan:
+<<<<<<< HEAD
 - [X] delete       
+=======
+- [ ] delete
+>>>>>>> parent of 08b9e8a... edit and check off more items
 - [ ] print statistics 
 - [ ] print using count range
 - [ ] print suffix
 
 
 #### BOTH: 
-- [x] end      // super simple, do not even need a function to implement this.
+- [ ] end
 
 // use "[ ]" to denote unchecked task and "[x]" to denote completed task
 

@@ -68,9 +68,9 @@ int main(void)
                 puts("List is empty.\n");
             
         }
-
+        
     } while (strcmp(command, "end") != 0);
-
+    
     puts("End of run.");
 }
 
@@ -92,10 +92,21 @@ void insert(ListNodePtr *sPtr, char value[])
         ListNodePtr previousPtr = NULL;
         ListNodePtr currentPtr = *sPtr;
         
-        // loop to find the correct location in the list
+        // loop to get to the end of the list
         while (currentPtr != NULL) {
-            previousPtr = currentPtr; // walk to ...
-            currentPtr = currentPtr->nextPtr; // ... next node
+            if(strcmp(currentPtr->data, value) == 0){
+                currentPtr->count++;
+                /*while ((currentPtr->count > previousPtr->count) || (previousPtr) == 0) { // swap and restart at head
+                    //use recursion
+                    previousPtr->nextPtr = currentPtr->nextPtr;
+                    currentPtr->nextPtr = previousPtr;
+                }*/
+                return;
+            }
+            else {
+                previousPtr = currentPtr; // walk to ...
+                currentPtr = currentPtr->nextPtr; // ... next node
+            }
         }
         
         // insert new node at end of list
@@ -110,9 +121,6 @@ void insert(ListNodePtr *sPtr, char value[])
             newPtr->count++;
             
         }
-    }
-    else {
-        printf("%s not inserted. No memory available.\n", value);
     }
 }
 
@@ -164,9 +172,9 @@ void printList(ListNodePtr currentPtr)
     }
     else {
         // while not the end of the list
-        while (currentPtr != NULL) { 
+        while (currentPtr != NULL) {
             printf("\t%s \t%d\n", currentPtr->data, currentPtr->count);
-            currentPtr = currentPtr->nextPtr;   
+            currentPtr = currentPtr->nextPtr;
         }
     }
     printf("\n");
@@ -175,46 +183,46 @@ void printList(ListNodePtr currentPtr)
 /* Search function to traverse the linked list to find a node with a specified */
 /* value and return it.                                                        */
 /*Node *search(char val[], Node **prev)
-{
-    struct node *ptr = head;
-    struct node *tmp = NULL;
-    int found = 0;
-    
-    printf("\nSearching for the list for value [%s] \n", val);
-    
-    while(ptr != NULL)
-    {
-        if (strcmp(&ptr->symbol, val) == 0)
-            {
-        found = 1;
-            break;
-        }
-        else
-        {
-            tmp = ptr;
-            ptr = ptr->next;
-        }
-    }
-    
-    if (found == 1)
-    {
-        if(prev)
-            *prev = tmp;
-        return ptr;
-    }
-    else
-        return NULL;
-}
-*/
+ {
+ struct node *ptr = head;
+ struct node *tmp = NULL;
+ int found = 0;
+ 
+ printf("\nSearching for the list for value [%s] \n", val);
+ 
+ while(ptr != NULL)
+ {
+ if (strcmp(&ptr->symbol, val) == 0)
+ {
+ found = 1;
+ break;
+ }
+ else
+ {
+ tmp = ptr;
+ ptr = ptr->next;
+ }
+ }
+ 
+ if (found == 1)
+ {
+ if(prev)
+ *prev = tmp;
+ return ptr;
+ }
+ else
+ return NULL;
+ }
+ */
 
 /* void print_list(NODE *head)
-{
-    NODE *current = head;
-    
-    while (current != NULL)
-    {
-        printf("%d\n", current->value);
-        current = current->next;
-    }
-}
-*/
+ {
+ NODE *current = head;
+ 
+ while (current != NULL)
+ {
+ printf("%d\n", current->value);
+ current = current->next;
+ }
+ }
+ */
