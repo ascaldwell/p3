@@ -25,6 +25,54 @@ struct listNode {
 typedef struct listNode ListNode; // synonym for struct listNode
 typedef ListNode *ListNodePtr; // synonym for ListNode*
 
+<<<<<<< HEAD
+=======
+ListNode sortList(ListNode *list)
+{
+    
+    //
+    if(list == NULL || *list->next == NULL)
+        return &list; // the list is already sorted.
+    
+    //replace largest node with the first :
+    
+    //1- find largest node :
+    ListNodePtr curr, largest, largestPrev;
+    curr = list;
+    largest = list;
+    prev = list;
+    largestPrev = list;
+    while(curr != NULL) {
+        if(curr->num > largest->num) {
+            largestPrev = prev;
+            largest = curr;
+        }
+        prev = curr;
+        curr = curr->next;
+        
+    }
+    //largest node is in largest.
+    
+    //2- switching firt node and largest node :
+    NodePtr tmp;
+    if(largest != list)
+    {
+        largestPrev->next = list;
+        tmp = list->next;
+        list->next = largest->next;
+        largest->next = tmp;
+    }
+    
+    // now largest is the first node of the list.
+    
+    // calling the function again with the sub list :
+    //            list minus its first node :
+    largest->next = sortList(largest->next);
+    
+    
+    return largest;
+}
+>>>>>>> b3da79d295fb7393bd9ee51dea3efbe060539445
 
 // prototypes
 void insert(ListNodePtr *sPtr, char value[]);
@@ -50,8 +98,13 @@ int main(void)
         
         if (strcmp(command, "ins") == 0) {
             insert(&startPtr, *item); // insert item in list
+            printf("Unsorted:\n");
             printList(startPtr);
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> b3da79d295fb7393bd9ee51dea3efbe060539445
         }
         if (strcmp(command, "del") == 0) {
             // delete an element
@@ -99,6 +152,7 @@ void insert(ListNodePtr *sPtr, char value[])
         while (currentPtr != NULL) {
             if(strcmp(currentPtr->data, value) == 0){
                 currentPtr->count++;
+<<<<<<< HEAD
                 while ((currentPtr->count > previousPtr->count) || (previousPtr) == 0) { // swap and restart at head
                                                                                         //use recursion
                         previousPtr->nextPtr = currentPtr->nextPtr;
@@ -107,6 +161,13 @@ void insert(ListNodePtr *sPtr, char value[])
                 return;
             }
             else {
+=======
+                currentPtr->nextPtr = *sPtr;
+                
+                
+                return;
+            }
+>>>>>>> b3da79d295fb7393bd9ee51dea3efbe060539445
             previousPtr = currentPtr; // walk to ...
             currentPtr = currentPtr->nextPtr; // ... next node
             }
@@ -125,9 +186,12 @@ void insert(ListNodePtr *sPtr, char value[])
             
         }
         
+<<<<<<< HEAD
         
 
 
+=======
+>>>>>>> b3da79d295fb7393bd9ee51dea3efbe060539445
     }
     else {
         printf("%s not inserted. No memory available.\n", value);
