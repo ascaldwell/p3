@@ -6,24 +6,21 @@
 - [x] create_list
 
 #### Andrew:
-- [ ] insert
+- [ ] insert        // just needs a sort function
 - [ ] forced delete
 - [ ] print list
 - [ ] print prefix
 
 #### Dan:
-<<<<<<< HEAD
+
 - [X] delete       
-=======
-- [ ] delete
->>>>>>> parent of 08b9e8a... edit and check off more items
 - [ ] print statistics 
 - [ ] print using count range
 - [ ] print suffix
 
 
 #### BOTH: 
-- [ ] end
+- [x] end
 
 // use "[ ]" to denote unchecked task and "[x]" to denote completed task
 
