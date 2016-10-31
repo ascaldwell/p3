@@ -25,62 +25,12 @@ struct listNode {
 typedef struct listNode ListNode; // synonym for struct listNode
 typedef ListNode *ListNodePtr; // synonym for ListNode*
 
-<<<<<<< HEAD
-=======
-ListNode sortList(ListNode *list)
-{
-    
-    //
-    if(list == NULL || *list->next == NULL)
-        return &list; // the list is already sorted.
-    
-    //replace largest node with the first :
-    
-    //1- find largest node :
-    ListNodePtr curr, largest, largestPrev;
-    curr = list;
-    largest = list;
-    prev = list;
-    largestPrev = list;
-    while(curr != NULL) {
-        if(curr->num > largest->num) {
-            largestPrev = prev;
-            largest = curr;
-        }
-        prev = curr;
-        curr = curr->next;
-        
-    }
-    //largest node is in largest.
-    
-    //2- switching firt node and largest node :
-    NodePtr tmp;
-    if(largest != list)
-    {
-        largestPrev->next = list;
-        tmp = list->next;
-        list->next = largest->next;
-        largest->next = tmp;
-    }
-    
-    // now largest is the first node of the list.
-    
-    // calling the function again with the sub list :
-    //            list minus its first node :
-    largest->next = sortList(largest->next);
-    
-    
-    return largest;
-}
->>>>>>> b3da79d295fb7393bd9ee51dea3efbe060539445
-
 // prototypes
 void insert(ListNodePtr *sPtr, char value[]);
 char delete(ListNodePtr *sPtr, char value[]);
 int isEmpty(ListNodePtr sPtr);
 void printList(ListNodePtr currentPtr);
 void instructions(void);
-
 
 int main(void)
 {
@@ -98,13 +48,7 @@ int main(void)
         
         if (strcmp(command, "ins") == 0) {
             insert(&startPtr, *item); // insert item in list
-            printf("Unsorted:\n");
             printList(startPtr);
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> b3da79d295fb7393bd9ee51dea3efbe060539445
         }
         if (strcmp(command, "del") == 0) {
             // delete an element
@@ -148,29 +92,10 @@ void insert(ListNodePtr *sPtr, char value[])
         ListNodePtr previousPtr = NULL;
         ListNodePtr currentPtr = *sPtr;
         
-        // loop to get to the end of the list
+        // loop to find the correct location in the list
         while (currentPtr != NULL) {
-            if(strcmp(currentPtr->data, value) == 0){
-                currentPtr->count++;
-<<<<<<< HEAD
-                while ((currentPtr->count > previousPtr->count) || (previousPtr) == 0) { // swap and restart at head
-                                                                                        //use recursion
-                        previousPtr->nextPtr = currentPtr->nextPtr;
-                        currentPtr->nextPtr = previousPtr;
-                    }
-                return;
-            }
-            else {
-=======
-                currentPtr->nextPtr = *sPtr;
-                
-                
-                return;
-            }
->>>>>>> b3da79d295fb7393bd9ee51dea3efbe060539445
             previousPtr = currentPtr; // walk to ...
             currentPtr = currentPtr->nextPtr; // ... next node
-            }
         }
         
         // insert new node at end of list
@@ -185,13 +110,6 @@ void insert(ListNodePtr *sPtr, char value[])
             newPtr->count++;
             
         }
-        
-<<<<<<< HEAD
-        
-
-
-=======
->>>>>>> b3da79d295fb7393bd9ee51dea3efbe060539445
     }
     else {
         printf("%s not inserted. No memory available.\n", value);
@@ -203,14 +121,10 @@ char delete(ListNodePtr *sPtr, char value[])
 {
     // delete first node if a match is found
     if (strcmp(value, (*sPtr)->data) == 0) {
-        if ((*sPtr)->count == 0) {
-            ListNodePtr tempPtr = *sPtr; // hold onto node being removed
-            *sPtr = (*sPtr)->nextPtr; // de-thread the node
-            free(tempPtr); // free the de-threaded node
-            return *value;
-        }
-        else
-            (*sPtr)->count--;
+        ListNodePtr tempPtr = *sPtr; // hold onto node being removed
+        *sPtr = (*sPtr)->nextPtr; // de-thread the node
+        free(tempPtr); // free the de-threaded node
+        return *value;
     }
     else {
         ListNodePtr previousPtr = *sPtr;
@@ -225,13 +139,10 @@ char delete(ListNodePtr *sPtr, char value[])
         
         // delete node at currentPtr
         if (currentPtr != NULL) {
-            if (currentPtr->count == 0) {
-                ListNodePtr tempPtr = currentPtr;
-                previousPtr->nextPtr = currentPtr->nextPtr;
-                free(tempPtr);
-            }
+            ListNodePtr tempPtr = currentPtr;
+            previousPtr->nextPtr = currentPtr->nextPtr;
+            free(tempPtr);
             return *value;
-            
         }
     }
     
@@ -245,7 +156,8 @@ int isEmpty(ListNodePtr sPtr)
 }
 
 // print the list
-void printList(ListNodePtr currentPtr) {
+void printList(ListNodePtr currentPtr)
+{
     // if list is empty
     if (isEmpty(currentPtr)) {
         puts("List is empty.\n");
@@ -259,8 +171,6 @@ void printList(ListNodePtr currentPtr) {
     }
     printf("\n");
 }
-
-
 
 /* Search function to traverse the linked list to find a node with a specified */
 /* value and return it.                                                        */
