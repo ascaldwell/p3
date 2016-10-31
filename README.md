@@ -12,7 +12,7 @@
 - [ ] print prefix
 
 #### Dan:
-- [ ] delete       // need to incorporate count into deleting a node, otherwise, it is fully functional.
+- [X] delete       
 - [ ] print statistics 
 - [ ] print using count range
 - [ ] print suffix
