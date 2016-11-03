@@ -31,6 +31,7 @@ char delete(ListNodePtr *sPtr, char value[]);
 int isEmpty(ListNodePtr sPtr);
 void printList(ListNodePtr currentPtr);
 void instructions(void);
+void move(ListNodePtr, ListNodePtr);
 
 int main(void)
 {
@@ -83,7 +84,7 @@ void insert(ListNodePtr *sPtr, char value[])
 {
     ListNodePtr newPtr = malloc(sizeof(ListNode)); // create node
     
-    int highCount = 1;
+    int counter = 0, i = 0;
     
     if (newPtr != NULL) { // is space available
         strcpy(newPtr->data, value); // place string value in node
@@ -91,41 +92,52 @@ void insert(ListNodePtr *sPtr, char value[])
         
         ListNodePtr previousPtr = NULL;
         ListNodePtr currentPtr = *sPtr;
-        ListNodePtr tmp = NULL;
+        ListNodePtr head = *sPtr;
+       // ListNodePtr tmp = NULL;
+        int counter = 0;
        
         
         // loop to get to the end of the list
         while (currentPtr != NULL) {
             if(strcmp(currentPtr->data, value) == 0){
+                currentPtr->count++;
                 
+                if (previousPtr == NULL)
+                    return;
                 
-                if (currentPtr->count >= highCount) { // swap and restart at head
-                    currentPtr->count++;
-                    highCount = currentPtr->count;
-                    if (currentPtr == *sPtr){
-                        return;
-                    }
-                    previousPtr->nextPtr = currentPtr->nextPtr;
-                    tmp = currentPtr;
-                    tmp->nextPtr = *sPtr;
-                    *sPtr = tmp;
-                    highCount = currentPtr->count;
+                if ((currentPtr->count > (*sPtr)->count))
+                {
+                    char temp[11];
+                    strcpy(temp, currentPtr->data);
+                    strcpy(currentPtr->data, (*sPtr)->data);
+                    strcpy((*sPtr)->data, temp);
+                           
+                    
+                    int tmp = currentPtr->count;
+                    currentPtr->count = (*sPtr)->count;
+                    (*sPtr)->count = tmp;
+                    
                 }
-                else if (currentPtr->count > previousPtr->count) {
-                    currentPtr->count++;
-                    if (currentPtr == *sPtr){
-                        return;
-                    }
-                    previousPtr->nextPtr = currentPtr->nextPtr;
-                    tmp = currentPtr;
-                    tmp->nextPtr = previousPtr;
-                    previousPtr = tmp;
+                
+                else if (currentPtr->count > previousPtr->count)
+                {
+                    char temp[11];
+                    strcpy(temp, currentPtr->data);
+                    strcpy(currentPtr->data, (*sPtr)->data);
+                    strcpy(previousPtr->data, temp);
+                    
+                    
+                    int tmp = currentPtr->count;
+                    currentPtr->count = previousPtr->count;
+                    previousPtr->count = tmp;
                 }
+                
                 return;
             }
             else {
                 previousPtr = currentPtr; // walk to ...
                 currentPtr = currentPtr->nextPtr; // ... next node
+                counter++;
             }
         }
         
@@ -199,6 +211,20 @@ void printList(ListNodePtr currentPtr)
     }
     printf("\n");
 }
+
+/*void sort (ListNodePtr curr, ListNodePtr prev)
+{
+    while (currentPtr->count > previousPtr->count && prev !=)
+    {
+        
+        int temp = currentPtr->count;
+        currentPtr->count = previousPtr->count;
+        previousPtr->count = temp;
+        
+        
+    }
+}*/
+
 
 
 
