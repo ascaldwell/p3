@@ -141,8 +141,14 @@ void insert(ListNodePtr *sPtr, char value[])
                     
                     
                 }
-                
-                //else if (currentPtr
+                else
+                {
+                    ListNodePtr tem = currentPtr;
+                    previousPtr->nextPtr = currentPtr->nextPtr;
+                    tem->nextPtr = (*sPtr)->nextPtr;
+                    (*sPtr)->nextPtr = tem;
+                    
+                }
                 
                 return;
             }
