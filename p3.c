@@ -45,6 +45,11 @@ int main(void)
         scanf("%s", command);
         if (strcmp(command, "end") == 0)
             break;
+        
+        
+        if (strcmp(command, "prl") == 0)
+            printList(startPtr);
+        
         scanf("%s", *item);
         
         
@@ -84,16 +89,13 @@ void instructions(void)
 void insert(ListNodePtr *sPtr, char value[])
 {
     ListNodePtr newPtr = malloc(sizeof(ListNode)); // create node
-    
-    int counter = 0, i = 0;
-    
+
     if (newPtr != NULL) { // is space available
         strcpy(newPtr->data, value); // place string value in node
         newPtr->nextPtr = NULL; // node does not link to another node
         
         ListNodePtr previousPtr = NULL;
         ListNodePtr currentPtr = *sPtr;
-        ListNodePtr head = *sPtr;
        // ListNodePtr tmp = NULL;
         int counter = 0;
        
@@ -115,21 +117,6 @@ void insert(ListNodePtr *sPtr, char value[])
                     previousPtr->nextPtr = currentPtr->nextPtr;
                     tem->nextPtr = *sPtr;
                     *sPtr = tem;
-                    
-                       /* strcpy(temp, currentPtr->data);
-                        strcpy(temp2, (*sPtr)->data);
-                        strcpy(currentPtr->data, (*sPtr)->data);
-                        strcpy((*sPtr)->data, temp);
-                           
-                        
-                        int tmp = currentPtr->count;
-                    int tmp2 = (*sPtr)->count;
-                        currentPtr->count = (*sPtr)->count;
-                        (*sPtr)->count = tmp;
-                    
-                        currentPtr = previousPtr;
-                        previousPtr = previousPtr->lastPtr;
-                 */
                 }
                 
                 else if (currentPtr->count > (*sPtr)->nextPtr->count)
@@ -141,12 +128,12 @@ void insert(ListNodePtr *sPtr, char value[])
                     
                     
                 }
-                else
+                else //(currentPtr->count == (*sPtr)->nextPtr->count)
                 {
                     ListNodePtr tem = currentPtr;
                     previousPtr->nextPtr = currentPtr->nextPtr;
-                    tem->nextPtr = (*sPtr)->nextPtr;
-                    (*sPtr)->nextPtr = tem;
+                    tem->nextPtr = (*sPtr)->nextPtr->nextPtr;
+                    (*sPtr)->nextPtr->nextPtr = tem;
                     
                 }
                 
@@ -232,6 +219,7 @@ void printList(ListNodePtr currentPtr)
         }
     }
     printf("\n");
+    return;
 }
 
 /*void sort (ListNodePtr curr, ListNodePtr prev)
