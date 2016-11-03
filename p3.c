@@ -27,12 +27,14 @@ typedef struct listNode ListNode; // synonym for struct listNode
 typedef ListNode *ListNodePtr; // synonym for ListNode*
 
 // prototypes
-void insert(ListNodePtr *sPtr, char value[]);
-char delete(ListNodePtr *sPtr, char value[]);
+void insert(ListNodePtr*, char[]);
+char delete(ListNodePtr*, char[]);
 int isEmpty(ListNodePtr sPtr);
 void printList(ListNodePtr currentPtr);
 void instructions(void);
 //void move(ListNodePtr, ListNodePtr);
+
+int counter = 0;
 
 int main(void)
 {
@@ -56,6 +58,7 @@ int main(void)
         if (strcmp(command, "ins") == 0) {
             insert(&startPtr, *item); // insert item in list
             printList(startPtr);
+            printf("Counter: %d\n", counter);
         }
         if (strcmp(command, "del") == 0) {
             // delete an element
@@ -93,17 +96,17 @@ void insert(ListNodePtr *sPtr, char value[])
     if (newPtr != NULL) { // is space available
         strcpy(newPtr->data, value); // place string value in node
         newPtr->nextPtr = NULL; // node does not link to another node
-        
+        //counter++;
         ListNodePtr previousPtr = NULL;
         ListNodePtr currentPtr = *sPtr;
        // ListNodePtr tmp = NULL;
-        int counter = 0;
        
         
         // loop to get to the end of the list
         while (currentPtr != NULL) {
             if(strcmp(currentPtr->data, value) == 0)
             {
+                counter++;
                 currentPtr->count++;
                 if (previousPtr == NULL)
                     return;
@@ -142,7 +145,7 @@ void insert(ListNodePtr *sPtr, char value[])
             else {
                 previousPtr = currentPtr; // walk to ...
                 currentPtr = currentPtr->nextPtr; // ... next node
-                counter++;
+
             }
         }
         
@@ -152,17 +155,20 @@ void insert(ListNodePtr *sPtr, char value[])
             newPtr->lastPtr = previousPtr;
             *sPtr = newPtr;
             
-            newPtr->count = 1;
+            newPtr->count++;
+            counter++;
             
         }
         else { // insert new node between previousPtr and currentPtr
             previousPtr->nextPtr = newPtr;
             newPtr->nextPtr = currentPtr;
             newPtr->lastPtr = previousPtr;
-            newPtr->count = 1;
+            newPtr->count++;
+            counter++;
             
         }
     }
+
 }
 
 // delete a list element
@@ -194,7 +200,7 @@ char delete(ListNodePtr *sPtr, char value[])
             return *value;
         }
     }
-    
+    counter--;
     return '\0';
 }
 
