@@ -20,6 +20,7 @@ struct listNode {
     int count;
     char data[10]; // each listNode contains a character
     struct listNode *nextPtr; // pointer to next node
+    struct listNode *lastPtr;
 };
 
 typedef struct listNode ListNode; // synonym for struct listNode
@@ -31,7 +32,7 @@ char delete(ListNodePtr *sPtr, char value[]);
 int isEmpty(ListNodePtr sPtr);
 void printList(ListNodePtr currentPtr);
 void instructions(void);
-void move(ListNodePtr, ListNodePtr);
+//void move(ListNodePtr, ListNodePtr);
 
 int main(void)
 {
@@ -99,38 +100,49 @@ void insert(ListNodePtr *sPtr, char value[])
         
         // loop to get to the end of the list
         while (currentPtr != NULL) {
-            if(strcmp(currentPtr->data, value) == 0){
+            if(strcmp(currentPtr->data, value) == 0)
+            {
                 currentPtr->count++;
-                
                 if (previousPtr == NULL)
                     return;
                 
+                
                 if ((currentPtr->count > (*sPtr)->count))
                 {
-                    char temp[11];
-                    strcpy(temp, currentPtr->data);
-                    strcpy(currentPtr->data, (*sPtr)->data);
-                    strcpy((*sPtr)->data, temp);
-                           
                     
-                    int tmp = currentPtr->count;
-                    currentPtr->count = (*sPtr)->count;
-                    (*sPtr)->count = tmp;
+                    
+                    ListNodePtr tem = currentPtr;
+                    previousPtr->nextPtr = currentPtr->nextPtr;
+                    tem->nextPtr = *sPtr;
+                    *sPtr = tem;
+                    
+                       /* strcpy(temp, currentPtr->data);
+                        strcpy(temp2, (*sPtr)->data);
+                        strcpy(currentPtr->data, (*sPtr)->data);
+                        strcpy((*sPtr)->data, temp);
+                           
+                        
+                        int tmp = currentPtr->count;
+                    int tmp2 = (*sPtr)->count;
+                        currentPtr->count = (*sPtr)->count;
+                        (*sPtr)->count = tmp;
+                    
+                        currentPtr = previousPtr;
+                        previousPtr = previousPtr->lastPtr;
+                 */
+                }
+                
+                else if (currentPtr->count > (*sPtr)->nextPtr->count)
+                {
+                    ListNodePtr tem = currentPtr;
+                    previousPtr->nextPtr = currentPtr->nextPtr;
+                    tem->nextPtr = (*sPtr)->nextPtr;
+                    (*sPtr)->nextPtr = tem;
+                    
                     
                 }
                 
-                else if (currentPtr->count > previousPtr->count)
-                {
-                    char temp[11];
-                    strcpy(temp, currentPtr->data);
-                    strcpy(currentPtr->data, (*sPtr)->data);
-                    strcpy(previousPtr->data, temp);
-                    
-                    
-                    int tmp = currentPtr->count;
-                    currentPtr->count = previousPtr->count;
-                    previousPtr->count = tmp;
-                }
+                //else if (currentPtr
                 
                 return;
             }
@@ -144,13 +156,17 @@ void insert(ListNodePtr *sPtr, char value[])
         // insert new node at end of list
         if (previousPtr == NULL) {
             newPtr->nextPtr = *sPtr;
+            newPtr->lastPtr = previousPtr;
             *sPtr = newPtr;
-            newPtr->count++;
+            
+            newPtr->count = 1;
+            
         }
         else { // insert new node between previousPtr and currentPtr
             previousPtr->nextPtr = newPtr;
             newPtr->nextPtr = currentPtr;
-            newPtr->count++;
+            newPtr->lastPtr = previousPtr;
+            newPtr->count = 1;
             
         }
     }
