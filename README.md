@@ -6,14 +6,14 @@
 - [x] create_list
 
 #### Andrew:
-- [ ] insert        // just needs a sort function
+- [x] insert        
 - [ ] forced delete
-- [ ] print list
+- [x] print list
 - [ ] print prefix
 
 #### Dan:
 
-- [X] delete       
+- [ ] delete                // doesn't account for node count yet 
 - [ ] print statistics 
 - [ ] print using count range
 - [ ] print suffix
