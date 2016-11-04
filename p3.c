@@ -45,7 +45,7 @@ int main(void)
     do {
         instructions(); // ask for a command
 
-        
+        scanf("%s", command);
         
         if (strcmp(command, "prl") == 0)
             printList(startPtr);
