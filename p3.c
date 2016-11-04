@@ -243,6 +243,84 @@ void printList(ListNodePtr currentPtr)
     }
 }*/
 
+void del(char *input) { // function with character pointer to input array 
+	ll *curr;
+	ll *track;
+	if(head == NULL) {
+		printf("List is empty.\n");
+	}
+	else {
+		curr = head; //current pointer = head pointer
+		while(curr->next != NULL) {
+			
+			if(!strcmp(curr->string, input)) {
+				curr->string == NULL 
+				if(curr->count > 1) {
+					curr->count--;
+				}
+			}
+			else 
+				if(curr == head) {
+					head = curr->next;
+				}
+`				else {
+					track = head;
+					while(track->next != curr) {
+						track = track->next;
+					}
+				track->next = curr->next;
+					
+				}
+			}
+			break
 
+		curr = curr->next;
+		if(curr->next == NULL) {
+			if(!strcmp(curr->string, input)) {
+				if (curr->count > 1) {
+					curr->count--;
+				}
+			}
+			else {
+				track = head;
+				while(track->next != curr) {
+					track = track->next;
+				track->next = NULL;
+				}
+			}
+		}
+		else {
+			printf("Word not found.\n");
+		}
+	}		
+} //end del
 
+void ins(char *input){
+	ll *curr;
+	if(head == NULL){
+		head = (ll *)malloc(sizeof(head));
+		head->count = 1;
+		strcpy(head->string, input);
+		head->next = NULL;
+	}
+	else {
+		curr = head;
+		while(curr->next != NULL){
+			if(!strcmp(curr->string, input)){
+				curr->pInt++
+				break
+			}
+			curr = curr->next;
+			if(curr->next == NULL) {
+				if(!strcmp(curr->string, input){
+					curr->pInt++
+			}
+			else {
+				curr->next = (ll *)malloc(sizeof(ll));
+				curr->next->pInt = 1;
+				strcpy(curr->next->string, value);
+				curr->next->next = NULL;
+				
+	}
+} //end ins
 
