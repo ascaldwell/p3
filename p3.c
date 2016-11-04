@@ -40,19 +40,18 @@ int main(void)
 {
     ListNodePtr startPtr = NULL; // initially there are no nodes
     char *item[11]; // char entered by user
-    char command[4];
+    char command[5];
     
     do {
         instructions(); // ask for a command
-        scanf("%s", command);
-        if (strcmp(command, "end") == 0)
-            break;
+
         
         
         if (strcmp(command, "prl") == 0)
             printList(startPtr);
-        
-        scanf("%s", *item);
+       
+        if ((strcmp(command, "ins") == 0) || strcmp(command, "del"))
+            scanf(" %s", *item);
         
         
         if (strcmp(command, "ins") == 0) {
@@ -63,19 +62,14 @@ int main(void)
         if (strcmp(command, "del") == 0) {
             // delete an element
             // if list is not empty
-            if (!isEmpty(startPtr)) {
+            
                 // if character is found, remove it
                 
-                if (delete(&startPtr, *item)) { // remove item
-                    printf("%s deleted.\n", *item);
-                    printList(startPtr);
-                }
-                else {
-                    printf("%s not found.\n\n", *item);
-                }
+            if (delete(&startPtr, *item)) { // remove item
+                printf("%s deleted.\n", *item);
+                printList(startPtr);
             }
-            else
-                puts("List is empty.\n");
+
         }
     } while (strcmp(command, "end") != 0);
     
@@ -175,11 +169,21 @@ void insert(ListNodePtr *sPtr, char value[])
 char delete(ListNodePtr *sPtr, char value[])
 {
     // delete first node if a match is found
-    if (strcmp(value, (*sPtr)->data) == 0) {
-        ListNodePtr tempPtr = *sPtr; // hold onto node being removed
-        *sPtr = (*sPtr)->nextPtr; // de-thread the node
-        free(tempPtr); // free the de-threaded node
-        return *value;
+    if (strcmp(value, (*sPtr)->data) == 0)
+    {
+        if ((*sPtr)->count > 1)
+        {
+            (*sPtr)->count--;
+            counter--;
+            return '\0';
+        }
+        else
+        {
+            ListNodePtr tempPtr = *sPtr; // hold onto node being removed
+            *sPtr = (*sPtr)->nextPtr; // de-thread the node
+            free(tempPtr); // free the de-threaded node
+            return *value;
+        }
     }
     else {
         ListNodePtr previousPtr = *sPtr;
@@ -213,17 +217,15 @@ int isEmpty(ListNodePtr sPtr)
 // print the list
 void printList(ListNodePtr currentPtr)
 {
-    // if list is empty
-    if (isEmpty(currentPtr)) {
-        puts("List is empty.\n");
-    }
-    else {
+
+    
         // while not the end of the list
-        while (currentPtr != NULL) {
+        while (currentPtr != NULL)
+        {
             printf("\t%s \t%d\n", currentPtr->data, currentPtr->count);
             currentPtr = currentPtr->nextPtr;
         }
-    }
+    
     printf("\n");
     return;
 }
