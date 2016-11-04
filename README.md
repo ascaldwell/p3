@@ -13,7 +13,7 @@
 
 #### Dan:
 
-- [ ] delete                // doesn't account for node count yet 
+- [x] delete                
 - [ ] print statistics 
 - [ ] print using count range
 - [ ] print suffix
