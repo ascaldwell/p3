@@ -31,7 +31,8 @@ struct listNode* GetNewNode(char x[]) {
     newNode->next = NULL;
     return newNode;
 }
-
+typedef struct listNode ListNode; // synonym for struct listNode
+typedef ListNode *ListNodePtr; // synonym for ListNode*
 struct listNode *head;
 
 //Inserts a Node at head of doubly linked list
@@ -47,14 +48,23 @@ void InsertAtHead(char x[]) {
 }
 
 //Inserts a Node at tail of Doubly linked list
-void InsertAtTail(char x[]) {
-    struct listNode* temp = head;
+void InsertAtTail(ListNodePtr *head, char x[]) {
+    
+    ListNodePtr temp = *head;
     struct listNode* newNode = GetNewNode(x);
-    if(head == NULL) {
-        head = newNode;
-        head->count++;
+    if(*head == NULL) {
+
+        (*head) = newNode;
+        (*head)->count++;
         return;
     }
+    if (((*head)->count > 0) && (strcmp((*head)->data, x) == 0))
+    {
+        (*head)->count++;
+        return;
+        
+    }
+
     while(temp->next != NULL){
         if (strcmp(temp->data, newNode->data) == 0){
             temp->count++;
@@ -85,12 +95,11 @@ void Print() {
 
 
 
-typedef struct listNode ListNode; // synonym for struct listNode
-typedef ListNode *ListNodePtr; // synonym for ListNode*
+
 
 // prototypes
 void insert(ListNodePtr*, char[]);
-char del(ListNodePtr*, char[]);
+void del(char key[]);
 int isEmpty(ListNodePtr sPtr);
 void printList(ListNodePtr currentPtr);
 void instructions(void);
@@ -98,14 +107,15 @@ void ins(ListNodePtr *, char *);
 void swap(ListNodePtr p1, ListNodePtr p2);
 void SelectionSort(ListNodePtr head);
 void reverseIterative(ListNodePtr head);
+void RemoveNode(char[], ListNodePtr* head);
 //void move(ListNodePtr, ListNodePtr);
 
 int counter = 0;
 
 int main(void)
 {
-    ListNodePtr startPtr = NULL; // initially there are no nodes
-    char *item[11]; // char entered by user
+    //ListNodePtr startPtr = NULL; // initially there are no nodes
+    char item[11]; // char entered by user
     char command[5];
     
     do {
@@ -114,118 +124,36 @@ int main(void)
         scanf("%s", command);
         
         if (strcmp(command, "prl") == 0)
-            printList(startPtr);
-       
-        if ((strcmp(command, "ins") == 0) || strcmp(command, "del"))
-            scanf(" %s", *item);
+        {
+            Print();
+        }
+        
+        scanf("%s", item);
         
         
         if (strcmp(command, "ins") == 0) {
-            InsertAtTail(*item); // insert item in list
-            //SelectionSort(startPtr);
+            InsertAtTail(&head, item); // insert item in list
+            SelectionSort(head);
             Print();
             printf("Counter: %d\n", counter);
         }
         if (strcmp(command, "del") == 0) {
-            // delete an element
-            // if list is not empty
-            
-                // if character is found, remove it
-                
-            if (del(&startPtr, *item)) { // remove item
-                printf("%s deleted.\n", *item);
-                printList(startPtr);
-            }
-
+            del(item); // remove item
+                printList(head);
         }
-    } while (strcmp(command, "end") != 0);
-    
-    puts("End of run.");
-}
 
-// display program instructions to user
+        
+        }
+        
+while (strcmp(command, "end") != 0);
+}
+        // display program instructions to user
 void instructions(void)
 {
     printf("Command? ");
 }
 
-// insert a new value into the list
-void insert(ListNodePtr *sPtr, char value[])
-{
-    ListNodePtr newPtr = malloc(sizeof(ListNode)); // create node
 
-    if (newPtr != NULL) { // is space available
-        strcpy(newPtr->data, value); // place string value in node
-        newPtr->next = NULL; // node does not link to another node
-        //counter++;
-        ListNodePtr previousPtr = NULL;
-        ListNodePtr currentPtr = *sPtr;
-       // ListNodePtr tmp = NULL;
-       
-        
-        // loop to get to the end of the list
-        while (currentPtr != NULL) {
-            if(strcmp(currentPtr->data, value) == 0)
-            {
-                counter++;
-                currentPtr->count++;
-                //reverseIterative(*sPtr);
-                //SelectionSort(*sPtr);
-                //reverseIterative(*sPtr);
-                return;
-            }
-            else {
-                previousPtr = currentPtr; // walk to ...
-                currentPtr = currentPtr->next; // ... next node
-
-            }
-        }
-        
-        // insert new node at end of list
-            newPtr->next= *sPtr;
-            newPtr->prev = previousPtr;
-            *sPtr = newPtr;
-            
-            newPtr->count++;
-            counter++;
-        
-    }
-
-}
-
-// delete a list element
-// delete a list element
-char delete(ListNodePtr *sPtr, char value[])
-{
-    // delete first node if a match is found
-    if (strcmp(value, (*sPtr)->data) == 0) {
-        ListNodePtr tempPtr = *sPtr; // hold onto node being removed
-        *sPtr = (*sPtr)->next; // de-thread the node
-        free(tempPtr); // free the de-threaded node
-        return *value;
-    }
-    else {
-        ListNodePtr previousPtr = *sPtr;
-        ListNodePtr currentPtr = (*sPtr)->next;
-        
-        // loop to find the correct location in the list
-        while (currentPtr != NULL && strcmp(currentPtr->data, value) != 0) {
-            previousPtr = currentPtr; // walk to ...
-            currentPtr = currentPtr->next; // ... next node
-            
-        }
-        
-        // delete node at currentPtr
-        if (currentPtr != NULL) {
-            ListNodePtr tempPtr = currentPtr;
-            previousPtr->next = currentPtr->next;
-            free(tempPtr);
-            return *value;
-        }
-    }
-    
-    return '\0';
-}// print the list
 void printList(ListNodePtr currentPtr)
 {
 
@@ -235,7 +163,13 @@ void printList(ListNodePtr currentPtr)
         // while not the end of the list
         while (currentPtr != NULL)
         {
-            printf("\t%s \t%d\n", currentPtr->data, currentPtr->count);
+            if (currentPtr == NULL)
+            {
+                printf("List is empty\n");
+                return;
+            }
+            
+                printf("\t%s \t%d\n", currentPtr->data, currentPtr->count);
             currentPtr = currentPtr->next;
         }
     
@@ -255,110 +189,104 @@ void printList(ListNodePtr currentPtr)
         
     }
 }*/
-
-
-
-void ins(ListNodePtr *head, char *input){
-	ListNodePtr curr;
-	if(head == NULL){
-		head = (ListNodePtr *)malloc(sizeof(ListNodePtr));
-		(*head)->count = 1;
-		strcpy((*head)->data, input);
-		(*head)->next = NULL;
-        return;
-	}
-	else {
-		curr = *head;
-		while(curr->next != NULL)
+void del(char input[]) { // function with character pointer to input array
+    ListNodePtr curr = head;
+    if(head == NULL) {
+        printf("List is empty.\n");
+    }
+    
+    if(strcmp(curr->data, head->data) == 0)
+    {
+        if (curr->count > 1)
         {
-			if(!strcmp(curr->data, input)){
-                curr->count++;
-                break;
-			}
-			curr = curr->next;
-			if(curr->next == NULL)
-            {
-				if(!strcmp(curr->data, input))
-                {
-                    curr->count++;
-                }
-            }
-			else
-            {
-				curr->next = *(ListNodePtr *)malloc(sizeof(ListNodePtr));
-				curr->next->count = 1;
-				strcpy(curr->next->data, input);
-				curr->next->next = NULL;
-            }
+            curr->count--;
+            return;
         }
-    } //end ins
-}
+        
+        else
+        {
+            ListNodePtr tmp = head->next;
+            free(curr);
+            head = tmp;
+            return;
+        }
+    }
+        
+    while(curr !=NULL && strcmp(curr->data, input)!= 0)
+    {
+        curr = curr->next;
+    }
+    
+    if (curr->count > 1)
+    {
+        curr->count--;
+        return;
+    }
+    else
+    {
+        curr->prev->next= curr->next;
+        free(curr);
+    }
 
+    
+} //end del
 
 /* To sort the linked list */
 void SelectionSort(ListNodePtr head)
 {
-    //reverseIterative(head);
-    
-   // ListNodePtr currNode= head;
-    ListNodePtr start = head;
-    ListNodePtr traverse;
-    ListNodePtr min;
-    
-    
-    
-    while(start->next)
+    bool swapped = false;
+    ListNodePtr temp = head;
+    if(head == NULL || head->next==NULL){
+        return;
+    }
+ // empty list, exit
+    // Going to last Node
+    while(swapped == false)
     {
-        min = start;
-        traverse = start->next;
-        
-        for (int i = 0; i < counter; i++){
-        while(traverse)
+        temp->prev = temp;
+        temp = temp->next;
+        if (temp->count > temp->prev->count)
         {
-            /* Find minimum element from array */
-            if( min->data > traverse->data )
-            {
-                min = traverse;
-            }
+            int tmpNum = temp->count;
+            temp->count = temp->prev->count;
+            temp->prev->count = tmpNum;
             
-            traverse = traverse->next;
+            char tmpString[11];
+            strcpy(tmpString, temp->data);
+            strcpy(temp->data, temp->prev->data);
+            strcpy(temp->prev->data, tmpString);
+            swapped = true;
         }
+        
+        if (swapped)
+        {
+            swapped = false;
         }
-
-        swap(start,min); // Put minimum element on starting location
-        start = start->next;
+        else{
+            break;
+        }
+        
+    }
+    // Traversing backward using prev pointer
+    temp = temp->prev;
+    while(temp != NULL) {
+        
+        if (temp->count > temp->prev->count)
+        {
+            int tmpNum = temp->count;
+            temp->count = temp->prev->count;
+            temp->prev->count = tmpNum;
+            
+            char tmpString[11];
+            strcpy(tmpString, temp->data);
+            strcpy(temp->data, temp->prev->data);
+            strcpy(temp->prev->data, tmpString);
+            
+        }
+        
+        temp = temp->prev;
         
     }
 }
 
-/* swap data field of linked list */
-void swap(ListNodePtr p1, ListNodePtr p2)
-{
-    int temp = p1->count;
-    p1->count = p2->count;
-    p2->count = temp;
-    
-    char tmp[11], tmp2[11];
-    strcpy(tmp, p1->data);
-    strcpy(tmp2, p2->data);
-    strcpy(p1->data, tmp2);
-    strcpy(p2->data, tmp);
-}
-
-
-void reverseIterative(ListNodePtr head){
-    ListNodePtr currNode = NULL;
-    ListNodePtr nextNode = NULL;
-    ListNodePtr prevNode = NULL;
-    
-    while(currNode!=NULL){
-        nextNode = currNode->next;
-        currNode->next = prevNode;
-        prevNode = currNode;
-        currNode = nextNode;
-    }
-    head = prevNode;
-    printf("\n Reverse Through Iteration\n");
-    
-}
 
