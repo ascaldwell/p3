@@ -32,26 +32,52 @@ int isEmpty(ListNodePtr sPtr);
 void printList(ListNodePtr currentPtr);
 void instructions(void);
 void findpref(ListNodePtr head, char s[]);
+void fdelete(int*);
 
 
+ListNodePtr head = NULL; // initially there are no nodes
+int count;
+
+
+
+void pst(void);
+void pcr(void);
+void psu(void);
 
 
 int main(void)
 {
-    ListNodePtr head = NULL; // initially there are no nodes
     char *item[11]; // char entered by user
     char command[4];
     
     do {
         instructions(); // ask for a command
         scanf("%s", command);
-        if (strcmp(command, "end") == 0)
-            break;
+
+        if(strcmp(command, "ppr") == 0)
+        {
+            findpref(head, *item);
+        }
+        if(strcmp(command, "pst") == 0) {
+            pst();
+        }
+        
+        
+        if(strcmp(command, "psu") == 0) {
+            psu();
+        }
+        
+        if(strcmp(command, "psu") == 0) {
+            psu();
+        }
+        
+        
         scanf("%s", *item);
         
         
         if (strcmp(command, "ins") == 0) {
             insert(&head, *item); // insert item in list
+            count++;
             printList(head);
         }
         if (strcmp(command, "del") == 0) {
@@ -63,6 +89,7 @@ int main(void)
                 if (delete(&head, *item)) { // remove item
                     printf("%s deleted.\n", *item);
                     printList(head);
+                    count--;
                 }
                 else {
                     printf("%s not found.\n\n", *item);
@@ -71,30 +98,55 @@ int main(void)
             else
                 puts("List is empty.\n");
         }
+        
+        if(strcmp(command, "fde") == 0)
+        {
+            int *someInt;
+            scanf("%d", someInt);
+            fdelete(someInt);
+        
+        }
+        
+
+        
     } while (strcmp(command, "end") != 0);
     
-    if(strcmp(command, "ppr") == 0)
-    {
-        findpref(head, *item);
-    }
+
+
 }
 
+// finds an prints out nodes with specified prefix
 void findpref(ListNodePtr head, char s[])
 {
-    arr[counter]
+
     ListNodePtr curr = head;
     if (curr == NULL)
     {
         printf("The list is empty");
         return;
     }
-    while (curr != NULL)
+    while (curr ->nextPtr!= NULL)
     {
-        char *strstr(const char *haystack, const char *needle);
+        printf("\t%s\t%d\n" , (strstr(curr->data, s)), curr->count);
         curr= curr->nextPtr;
     }
+
 }
 
+void fdelete(int *a){
+
+  ListNodePtr curr = head;
+    
+    while (curr != NULL){
+        if(curr->count == *a){
+            ListNodePtr temp = curr;
+            curr = curr->nextPtr;
+            free(temp);
+            curr= curr->nextPtr;
+        }
+            
+    }
+}
 
 
 // display program instructions to user
@@ -182,6 +234,9 @@ void insert(ListNodePtr *sPtr, char value[])
     }
 }
 
+
+
+
 // delete a list element
 char delete(ListNodePtr *sPtr, char value[])
 {
@@ -205,7 +260,7 @@ char delete(ListNodePtr *sPtr, char value[])
         
         // delete node at currentPtr
         if (currentPtr != NULL) {
-            ListNodePtr tempPtr = currentPtr;
+            //ListNodePtr tempPtr = currentPtr;
             previousPtr->nextPtr = currentPtr->nextPtr;
             free(currentPtr);
             
@@ -224,6 +279,8 @@ char delete(ListNodePtr *sPtr, char value[])
     
     return '\0';
 }
+
+
 
 // return 1 if the list is empty, 0 otherwise
 int isEmpty(ListNodePtr sPtr)
@@ -247,3 +304,84 @@ void printList(ListNodePtr currentPtr)
     }
     printf("\n");
 }
+
+void pcr() {
+    
+    int count,temp, v1, v2; //temp count
+    count = temp = 0;
+    ListNodePtr curr = head;
+    
+    scanf("%d %d", &v1, &v2);
+    
+    if(curr->nextPtr == NULL) {
+        printf("The list is empty.");
+    }
+    else {
+        while((curr->nextPtr) != NULL) {
+            if((count <= v1) && (count >= v2)) {
+                printf("%s:\t%d\n", curr->data, curr->count);
+            }
+            curr = (curr->nextPtr);
+        }
+    }
+} //end pcr
+
+void psu(void) {
+    
+    char input[10];
+    ListNodePtr curr = head;
+    scanf("%s", input);
+    
+    if(curr->nextPtr == NULL) {
+        printf("The list is empty.");
+    }
+    else {
+        while(curr->nextPtr != NULL) {
+            
+            if(strrchr(curr->data, atoi(input)) != NULL) {
+                printf("%s\t%d\n", curr->data, curr->count);
+            }
+            curr = curr->nextPtr;	
+        }
+    }
+} //end psu
+
+void pst() {
+    
+    int max = 0, min = 1;
+    int temp = 0; //count the counts
+    ListNodePtr curr = head; //curr points to linked list struct head
+    ListNodePtr curr2 = head;
+    
+    if(head == NULL) {
+        printf("The list is empty");
+    }
+    else {
+        while(curr != NULL) {
+            //if (curr->count ==1)
+            temp++;
+            if(curr->count > max) {
+                max = curr->count; //max count in list
+            }
+            if(curr->count < min) {
+                min = curr->count; //minimum count in list
+                
+            }
+            curr = curr->nextPtr; //move to next node
+        }
+    }
+    int avgCount;
+    while(curr2->nextPtr !=NULL)
+    {
+        avgCount += curr2->count; // broken af
+    }
+    
+    avgCount = avgCount/count;
+    
+    printf("Number of nodes in list: %d\n", temp);
+    printf("Maximum count in list: %d\n", max);
+    printf("Minimum count in list: %d\n", min);
+    printf("The average count is %d\n", avgCount);
+    return;
+} //end pst function
+
