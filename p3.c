@@ -33,7 +33,7 @@ void printList(ListNodePtr currentPtr);
 void instructions(void);
 void findpref(void);
 void fdelete(void);
-int average(int,int);
+
 
 ListNodePtr head = NULL; // initially there are no nodes
 int count;
@@ -452,8 +452,4 @@ void pst() {
 
 } //end pst function
 
-int average(int temp, int temp2){
-    float avg = 8/temp;
-    return avg;
-}
 
