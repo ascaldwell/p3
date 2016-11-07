@@ -7,14 +7,14 @@
 
 #### Andrew:
 - [x] insert        
-- [ ] forced delete
+- [x] forced delete
 - [x] print list
-- [ ] print prefix
+- [x] print prefix
 
 #### Dan:
 
 - [x] delete                
-- [ ] print statistics 
+- [x] print statistics 
 - [ ] print using count range
 - [ ] print suffix
 
