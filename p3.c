@@ -31,6 +31,11 @@ char delete(ListNodePtr *sPtr, char value[]);
 int isEmpty(ListNodePtr sPtr);
 void printList(ListNodePtr currentPtr);
 void instructions(void);
+void ins(char *);
+void del(char *); 
+int pst(void);
+int pcr(int *);
+char psu(char *);
 
 int main(void)
 {
@@ -67,10 +72,19 @@ int main(void)
             else
                 puts("List is empty.\n");
         }
+        if(strcmp(command, "pst") == 0) {
+			pst(void);
+		}
+		if(strcmp(command, "pcr") == 0) {
+			pcr();
+		}
+		if(strcmp(command, "psu") == 0) {
+			psu(); 
+        
     } while (strcmp(command, "end") != 0);
     
     puts("End of run.");
-}
+} //end main
 
 // display program instructions to user
 void instructions(void)
@@ -199,3 +213,72 @@ void printList(ListNodePtr currentPtr)
     }
     printf("\n");
 }
+
+int pst(void) {
+	
+	int max, min;
+	int temp = 0; //count the counts
+	ll *curr = head; //curr points to linked list struct head
+
+	if(head == NULL) {
+		printf("The list is empty");
+	}
+	else {
+		while(curr->next != NULL) {
+			if(curr->symbol != NULL) {
+				temp++;
+			}
+			if(curr->count >= max) {
+				max = curr->count; //max count in list
+			}	
+			if(curr->count <= min) {
+				min = curr->count; //minimum count in list
+				
+			}
+			curr = curr->next; //move to next node
+		}
+	} 
+	printf("Number of nodes in list: %d\n", temp);
+	printf("Maximum count in list: %d\n", max);
+	printf("Minimum count in list: %d\n", min); 
+} //end pst function
+
+void pcr(int *pIN) {
+
+	int count,temp, v1, v2; //temp count
+	count = temp = 0;
+	ll *curr = head;
+	
+	scanf("%d %d", &v1, &v2);
+
+	if(curr->next == NULL) {
+		printf("The list is empty.");
+	}
+	else {
+		while((curr->next) != NULL) {
+			if((count <= v1) && (count >= v2)) {
+				printf("%s:\t%d\n", curr->symbol,curr->count);
+			}
+			curr = (curr->next);
+		}
+	}	
+} //end pcr
+
+char psu(char *ptr_Input) {
+
+	ll *curr = head;
+	scanf("%s", ptr_Input);
+
+	if(curr->next == NULL) {
+		printf("The list is empty.");
+	}
+	else {
+		while(curr->next != NULL) {
+			
+			if(strrchr(curr->data, atoi(ptr_Input)) != NULL) {
+				printf("%s\t%d\n", curr->data, curr->count);
+			}
+			curr = curr->next;	
+		}
+	}
+} //end psu
