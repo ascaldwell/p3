@@ -33,16 +33,16 @@ void printList(ListNodePtr currentPtr);
 void instructions(void);
 void findpref(void);
 void fdelete(void);
-
+void pst(void);
+void pcr(void);
+void psu(void);
 
 ListNodePtr head = NULL; // initially there are no nodes
 int count;
 
 
 
-void pst(void);
-void pcr(void);
-void psu(void);
+
 
 
 int main(void)
@@ -81,6 +81,10 @@ int main(void)
             fdelete();
            // printList(head);
         
+        }
+        else if(strcmp(command, "pcr") == 0)
+        {
+            pcr();
         }
         
         
@@ -155,6 +159,7 @@ void fdelete(){
         // If head node itself holds the key or multiple occurrences of key
         while (temp != NULL && temp->count == key)
         {
+            
             *head_ref = *temp->nextPtr;   // Changed head
             free(temp);               // free old head
             temp = head_ref;         // Change Temp
@@ -176,7 +181,7 @@ void fdelete(){
             
             // Unlink the node from linked list
             prev->nextPtr = temp->nextPtr;
-            
+            temp->count = 0;
             free(temp);  // Free memory
             
             //Update Temp for next iteration of outer loop
@@ -389,8 +394,8 @@ void pcr() {
         printf("The list is empty.");
     }
     else {
-        while((curr->nextPtr) != NULL) {
-            if((count <= v1) && (count >= v2)) {
+        while(curr->nextPtr != NULL) {
+            if((curr->count >= v1) && (curr->count <= v2)) {
                 printf("%s:\t%d\n", curr->data, curr->count);
             }
             curr = (curr->nextPtr);
@@ -400,7 +405,7 @@ void pcr() {
 
 void psu(void) {
     
-    char input[10];
+    char input[11];
     ListNodePtr curr = head;
     scanf("%s", input);
     
