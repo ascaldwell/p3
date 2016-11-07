@@ -31,10 +31,14 @@ char delete(ListNodePtr *sPtr, char value[]);
 int isEmpty(ListNodePtr sPtr);
 void printList(ListNodePtr currentPtr);
 void instructions(void);
+void findpref(ListNodePtr head, char s[]);
+
+
+
 
 int main(void)
 {
-    ListNodePtr startPtr = NULL; // initially there are no nodes
+    ListNodePtr head = NULL; // initially there are no nodes
     char *item[11]; // char entered by user
     char command[4];
     
@@ -47,18 +51,18 @@ int main(void)
         
         
         if (strcmp(command, "ins") == 0) {
-            insert(&startPtr, *item); // insert item in list
-            printList(startPtr);
+            insert(&head, *item); // insert item in list
+            printList(head);
         }
         if (strcmp(command, "del") == 0) {
             // delete an element
             // if list is not empty
-            if (!isEmpty(startPtr)) {
+            if (!isEmpty(head)) {
                 // if character is found, remove it
                 
-                if (delete(&startPtr, *item)) { // remove item
+                if (delete(&head, *item)) { // remove item
                     printf("%s deleted.\n", *item);
-                    printList(startPtr);
+                    printList(head);
                 }
                 else {
                     printf("%s not found.\n\n", *item);
@@ -69,8 +73,29 @@ int main(void)
         }
     } while (strcmp(command, "end") != 0);
     
-    puts("End of run.");
+    if(strcmp(command, "ppr") == 0)
+    {
+        findpref(head, *item);
+    }
 }
+
+void findpref(ListNodePtr head, char s[])
+{
+    arr[counter]
+    ListNodePtr curr = head;
+    if (curr == NULL)
+    {
+        printf("The list is empty");
+        return;
+    }
+    while (curr != NULL)
+    {
+        char *strstr(const char *haystack, const char *needle);
+        curr= curr->nextPtr;
+    }
+}
+
+
 
 // display program instructions to user
 void instructions(void)
@@ -109,7 +134,20 @@ void insert(ListNodePtr *sPtr, char value[])
                     tmp = currentPtr;
                     tmp->nextPtr = *sPtr;
                     *sPtr = tmp;
-                    highCount = currentPtr->count;
+                    highCount = (*sPtr)->count;
+                    
+                    if ((*sPtr)->nextPtr->count > (*sPtr)->count )
+                    {
+                        int tmp = (*sPtr)->nextPtr->count;
+                        (*sPtr)->nextPtr->count = (*sPtr)->count;
+                        (*sPtr)->count = tmp;
+                        
+                        char temp[11];
+                        strcpy( temp, (*sPtr)->nextPtr->data);
+                        strcpy((*sPtr)->nextPtr->data, (*sPtr)->data);
+                        strcpy((*sPtr)->data, temp);
+                        
+                    }
                 }
                 else if (currentPtr->count > previousPtr->count) {
                     currentPtr->count++;
@@ -169,7 +207,17 @@ char delete(ListNodePtr *sPtr, char value[])
         if (currentPtr != NULL) {
             ListNodePtr tempPtr = currentPtr;
             previousPtr->nextPtr = currentPtr->nextPtr;
-            free(tempPtr);
+            free(currentPtr);
+            
+            
+            if (currentPtr->count > previousPtr->count)
+            {
+
+                ListNodePtr tmp = currentPtr;
+                tmp->nextPtr = previousPtr;
+                previousPtr = tmp;
+
+            }
             return *value;
         }
     }
