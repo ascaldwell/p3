@@ -105,17 +105,7 @@ int main(void)
             }
         }
         
-        else {
-            printf("Not a command\n");
-        }
-
-        
-
-        
     } while (strcmp(command, "end") != 0);
-    
-
-
 }
 
 // finds and prints out nodes with specified prefix
