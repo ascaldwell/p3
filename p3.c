@@ -1,10 +1,10 @@
 //
-//  main.c
-//  p3
+//  Andrew Caldwell and Dan Stowe
+//  Unix ID: ac289774
+//  Discussion Session: Friday 1:40 PM
 //
-//  Created by Andrew Caldwell and Dan Stowe on 10/26/16.
-//
-//
+
+
 
 #include <stdio.h>
 #include <string.h>
@@ -12,10 +12,13 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+// Program that inserts, deletes, and gets data on the linked list created.
+
 #define MAX_CMD_LENGTH 4
 #define MAX_STRING_LENGTH 11
 
-// self-referential structure
+
+// linked list node
 struct listNode {
     int count;
     char data[10]; // each listNode contains a character
@@ -36,15 +39,14 @@ void fdelete(void);
 void pst(void);
 void pcr(void);
 void psu(void);
+int EndsWith(char *, char *);
 
 ListNodePtr head = NULL; // initially there are no nodes
 int count;
 
 
 
-
-
-
+// main function for driving the program
 int main(void)
 {
     //char *item[11]; // char entered by user
@@ -116,7 +118,7 @@ int main(void)
 
 }
 
-// finds an prints out nodes with specified prefix
+// finds and prints out nodes with specified prefix
 void findpref(void)
 {
     char prefix[11];
@@ -192,12 +194,12 @@ void fdelete(){
     
 
 
-
 // display program instructions to user
 void instructions(void)
 {
     printf("Command? ");
 }
+
 
 // insert a new value into the list
 void insert()
@@ -297,7 +299,7 @@ void insert()
 
 
 
-// delete a list element
+// delete a list element specified by user
 char delete(void)
 {
     ListNodePtr *sPtr = &head;
@@ -382,6 +384,7 @@ void printList(ListNodePtr currentPtr)
     printf("\n");
 }
 
+// print count range that is specified by the user
 void pcr() {
     
     int count,temp, v1, v2; //temp count
@@ -396,33 +399,54 @@ void pcr() {
     else {
         while(curr->nextPtr != NULL) {
             if((curr->count >= v1) && (curr->count <= v2)) {
-                printf("%s:\t%d\n", curr->data, curr->count);
+                printf("%s\t%d\n", curr->data, curr->count);
             }
             curr = (curr->nextPtr);
         }
     }
 } //end pcr
 
+// print nodes that contain the suffix specified by the user.
 void psu(void) {
+    char suffix[11];
+    scanf("%s", suffix);
     
-    char input[11];
+
     ListNodePtr curr = head;
-    scanf("%s", input);
     
-    if(curr->nextPtr == NULL) {
+    if(curr == NULL) {
         printf("The list is empty.");
+        return;
     }
     else {
-        while(curr->nextPtr != NULL) {
-            
-            if(strrchr(curr->data, atoi(input)) != NULL) {
-                printf("%s\t%d\n", curr->data, curr->count);
-            }
-            curr = curr->nextPtr;	
+        while(curr != NULL) {
+                                                  // otherwise, print to console
+                if(EndsWith(curr->data, suffix)!= 0){
+                    printf("\t%s\t%d\n" , curr->data, curr->count);
+                    curr= curr->nextPtr;    // continue to end of the list
+
+                }
+                else{
+                curr= curr->nextPtr;    // continue to end of the list
+        }
         }
     }
 } //end psu
 
+// helper function for psu
+int EndsWith(char *str, char *suffix)
+{
+    if (!str || !suffix)
+        return 0;
+    size_t lenstr = strlen(str);
+    size_t lensuffix = strlen(suffix);
+    if (lensuffix >  lenstr)
+        return 0;
+    return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
+}
+
+
+// print statistics of the linked list
 void pst() {
     
     int max, min = 1;
