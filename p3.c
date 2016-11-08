@@ -400,20 +400,27 @@ void pcr() {
 
 void psu(void) {
     
-    char input[10];
-    ListNodePtr curr = head;
-    scanf("%s", input);
+    char suffix[10];
+    scanf("%s", suffix);
     
-    if(curr->nextPtr == NULL) {
+    ListNodePtr curr = head;
+    
+    if(curr == NULL) {
         printf("The list is empty.");
+        return;
     }
     else {
-        while(curr->nextPtr != NULL) {
+        while(curr != NULL) {
             
-            if(strrchr(curr->data, atoi(input)) != NULL) {
-                printf("%s\t%d\n", curr->data, curr->count);
+            if(suffix[strlen(suffix) - 1] != curr->data[strlen(suffix) - 1]) {
+                curr= curr->nextPtr;
             }
-            curr = curr->nextPtr;	
+            else {
+                if(strcmp(suffix, strstr(curr->data, suffix))){
+                    printf("%s\t%d\n", curr->data, curr->count);
+                }
+                curr= curr->nextPtr;	
+            }
         }
     }
 } //end psu
