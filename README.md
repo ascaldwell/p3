@@ -15,8 +15,8 @@
 
 - [x] delete                
 - [x] print statistics 
-- [ ] print using count range
-- [ ] print suffix
+- [x] print using count range
+- [x] print suffix
 
 
 #### BOTH: 
