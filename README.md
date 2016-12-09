@@ -3,7 +3,6 @@
 ## Project 3
 ---
 
-- [x] create_list
 
 #### Andrew:
 - [x] insert        
@@ -20,6 +19,7 @@
 
 
 #### BOTH: 
+- [x] create_list
 - [x] end
 
 // use "[ ]" to denote unchecked task and "[x]" to denote completed task
